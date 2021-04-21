@@ -9,7 +9,8 @@
 </template>
 
 <script>
-import {ref} from "vue";
+import {ref} from "vue"
+import useStorage from "@/composables/UseStorage";
 
 export default {
   name: "CreatePlaylist",
@@ -18,10 +19,10 @@ export default {
     const description = ref('')
     const file = ref(null)
     const fileError = ref(null)
-
-    const submitPlaylist = () => {
+    const {error, url, filePath, uploadImg} = useStorage()
+    const submitPlaylist = async () => {
       if (file.value) {
-        console.log('submit')
+        await uploadImg(file.value)
       }
     }
 
