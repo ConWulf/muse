@@ -36,9 +36,9 @@
                 </router-link>
               </div>
               <div v-else>
-<!--              <router-link :to="{name: 'Playlists'}">-->
-                <p class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Playlists</p>
-<!--              </router-link>-->
+                <router-link :to="{name: 'CreatePlaylist'}">
+                  <p class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Create Playlist</p>
+                </router-link>
               </div>
             </div>
           </div>
@@ -53,9 +53,9 @@
           </button>
 
           <!-- Profile dropdown -->
-          <div class="ml-3 relative">
+          <div class="ml-3 relative z-10">
             <div>
-              <button type="button" class="bg-gray-800 flex text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white" id="user-menu" aria-expanded="false" aria-haspopup="true">
+              <button @click="openMenu" type="button" class="bg-gray-800 flex text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white" id="user-menu" aria-expanded="false" aria-haspopup="true">
                 <span class="sr-only">Open user menu</span>
                 <img class="h-8 w-8 rounded-full" src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="">
               </button>
@@ -71,7 +71,7 @@
                 From: "transform opacity-100 scale-100"
                 To: "transform opacity-0 scale-95"
             -->
-            <div class="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="user-menu">
+            <div v-if="isOpen" class="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="user-menu">
               <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">Your Profile</a>
               <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">Settings</a>
               <button @click="signOut" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left focus:outline-none" role="menuitem">Sign out</button>
@@ -94,8 +94,9 @@
         <router-link :to="{name: 'Login'}">
           <p v-if="!user" class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium">Login</p>
         </router-link>
-
-        <p class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium">Playlists</p>
+        <router-link :to="{name: 'CreatePlaylist'}">
+          <p class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium">Create Playlist</p>
+        </router-link>
       </div>
     </div>
   </nav>
@@ -105,12 +106,14 @@
 import useLogout from "@/composables/UseLogout"
 import getUser from "@/composables/GetUser";
 import { useRouter } from "vue-router"
+import {ref} from "vue";
 export default {
   name: "Navbar",
   setup() {
     const {error, logout, isPending} = useLogout()
     const router = useRouter()
     const {user} = getUser()
+    const isOpen = ref(false)
     const signOut = async () => {
       await logout()
       if(!error.value) {
@@ -118,7 +121,11 @@ export default {
       }
     }
 
-    return {error, signOut, isPending, user}
+    const openMenu = () => {
+      isOpen.value = !isOpen.value
+    }
+
+    return {error, signOut, isPending, user, isOpen, openMenu}
   }
 }
 </script>

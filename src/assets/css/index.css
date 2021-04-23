@@ -10,3 +10,9 @@
         @apply h-full flex flex-col
     }
 }
+
+@layer components {
+    .circleImg {
+        clip-path: circle(41.3% at 49% 50%);
+    }
+}

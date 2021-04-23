@@ -6,7 +6,7 @@ const useCollection = (collection) => {
     const error = ref(null)
     const isPending = ref(false)
 
-    const addMessage = async (msg) => {
+    const addDoc = async (msg) => {
         error.value = null
         isPending.value = true
         try {
@@ -17,7 +17,7 @@ const useCollection = (collection) => {
             isPending.value = false
         }
     }
-    return { error, addMessage, isPending }
+    return { error, addDoc, isPending }
 }
 
 export default useCollection
