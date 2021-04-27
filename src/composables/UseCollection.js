@@ -10,8 +10,9 @@ const useCollection = (collection) => {
         error.value = null
         isPending.value = true
         try {
-            await firestore.collection(collection).add(msg)
+            const resp = await firestore.collection(collection).add(msg)
             isPending.value = false
+            return resp
         } catch {
             error.value = 'could not post message.'
             isPending.value = false
