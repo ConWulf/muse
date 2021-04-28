@@ -10,7 +10,6 @@ const getDoc = (collection, id) => {
         .doc(id)
 
     const unsub = docRef.onSnapshot( snapDoc => {
-        console.log(doc);
         if (snapDoc.data()) {
             doc.value = {...snapDoc.data(), id: snapDoc.id}
             error.value = null

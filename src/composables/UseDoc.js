@@ -17,6 +17,7 @@ const useDoc = (collection, id) => {
             return resp
         } catch {
             error.value = "could not delete item."
+            isPending.value = false
         }
     }
 

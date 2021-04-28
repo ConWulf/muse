@@ -20,25 +20,28 @@
 <script>
 import getDoc from "@/composables/GetDoc"
 import getUser from "@/composables/GetUser"
-import useDoc from "@/composables/UseDoc";
-import {computed} from "vue";
+import useDoc from "@/composables/UseDoc"
+import useStorage from "@/composables/UseStorage";
+import {computed} from "vue"
+import {useRouter} from "vue-router"
 export default {
   name: "Details",
   props: ['id'],
   setup(props) {
     const {error, doc: playlist} = getDoc('playlists', props.id)
     const { user } = getUser()
-    const {error: e, isPending, deleteDoc} = useDoc('playlists', playlist.value.id)
+    const {error: e, isPending, deleteDoc} = useDoc('playlists', props.id)
+    const {deleteImg} = useStorage()
+    const router = useRouter()
 
     const owner = computed(() => {
       return playlist.value && user.value && user.value.uid === playlist.value.userId
     })
 
     const removePlaylist = async () => {
+      await deleteImg(playlist.value.filePath)
       await deleteDoc()
-      if(!e) {
-        console.log('do something');
-      }
+      await router.push({name: 'Home'})
     }
 
     return {error, playlist, owner, removePlaylist, e, isPending}
