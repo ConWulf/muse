@@ -81,7 +81,7 @@ export default {
     const loginUser = async () => {
       await login(email.value, password.value)
       if(!error.value) {
-        await router.push("/")
+        await router.push({name: 'UserPlaylists'})
       }
     }
 

@@ -21,7 +21,21 @@ const useDoc = (collection, id) => {
         }
     }
 
-    return { error, isPending, deleteDoc }
+    const updateDoc = async (updatedObj) => {
+        error.value = null
+        isPending.value = true
+        try {
+            const resp = await doc.update(updatedObj)
+            isPending.value = false
+            return resp
+        } catch {
+            error.value = "could not update doc."
+            isPending.value = false
+        }
+    }
+
+
+    return { error, isPending, deleteDoc, updateDoc }
 }
 
 export default useDoc

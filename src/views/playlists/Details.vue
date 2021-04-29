@@ -13,7 +13,19 @@
         <button v-if="owner" @click="removePlaylist">Delete</button>
       </div>
     </div>
-    <div class="sm:col-span-2 col-span-full">songs</div>
+    <div v-if="playlist" class="sm:col-span-2 col-span-full">
+      <div v-if="!playlist.songs.length">No Songs Added Yet</div>
+      <div v-else>
+        <div v-for="song in playlist.songs" :key="song.id" class="flex p-3 justify-start space-x-8 items-center">
+          <div class="text-sm">
+            <h3>{{song.title}}</h3>
+            <h4>{{song.artist}}</h4>
+          </div>
+          <button @click="removeSong(song.id)" v-if="owner" class="px-2 py-1">Delete</button>
+        </div>
+      </div>
+      <AddSong v-if="owner" :playlist="playlist"/>
+    </div>
   </div>
 </template>
 
@@ -24,13 +36,15 @@ import useDoc from "@/composables/UseDoc"
 import useStorage from "@/composables/UseStorage";
 import {computed} from "vue"
 import {useRouter} from "vue-router"
+import AddSong from "@/components/AddSong";
 export default {
   name: "Details",
+  components: {AddSong},
   props: ['id'],
   setup(props) {
     const {error, doc: playlist} = getDoc('playlists', props.id)
     const { user } = getUser()
-    const {error: e, isPending, deleteDoc} = useDoc('playlists', props.id)
+    const {error: e, isPending, deleteDoc, updateDoc} = useDoc('playlists', props.id)
     const {deleteImg} = useStorage()
     const router = useRouter()
 
@@ -44,11 +58,14 @@ export default {
       await router.push({name: 'Home'})
     }
 
-    return {error, playlist, owner, removePlaylist, e, isPending}
+    const removeSong = async (id) => {
+      const songs = playlist.value.songs.filter(song => song.id !== id)
+      await updateDoc({
+        songs
+      })
+    }
+
+    return {error, playlist, owner, removePlaylist, e, isPending, removeSong}
   }
 }
 </script>
-
-<style scoped>
-
-</style>

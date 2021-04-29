@@ -9,6 +9,9 @@
     #app {
         @apply h-full flex flex-col
     }
+    button:not(nav button) {
+        @apply px-4 py-2 bg-purple-500 hover:bg-purple-600 border border-transparent text-sm font-medium rounded-md text-white
+    }
 }
 
 @layer components {

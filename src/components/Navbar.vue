@@ -73,8 +73,10 @@
             -->
             <div v-if="isOpen" class="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="user-menu">
               <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">Your Profile</a>
-              <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">Settings</a>
-              <button @click="signOut" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left focus:outline-none" role="menuitem">Sign out</button>
+              <router-link :to="{name: 'UserPlaylists'}">
+                <p class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">My Playlists</p>
+              </router-link>
+              <button @click="signOut" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left focus:outline-none sign-out" role="menuitem">Sign out</button>
             </div>
           </div>
         </div>

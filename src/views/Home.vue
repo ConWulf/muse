@@ -31,7 +31,6 @@ export default {
         })
       }
     })
-
     return {error, docs, docWithFormattedDate }
   }
 }

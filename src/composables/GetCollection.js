@@ -1,13 +1,18 @@
 import {ref, watchEffect} from "vue"
 import {firestore} from "@/firebase/config"
 
-const getCollection = (collection) => {
+const getCollection = (collection, query) => {
     const docs = ref(null)
     const error = ref(null)
 
     let  collectionRef = firestore
         .collection(collection)
         .orderBy('createdAt')
+
+    if (query) {
+        collectionRef = collectionRef.where(...query)
+    }
+
 
     const col = collectionRef.onSnapshot( snapshot => {
         let docBucket = []
@@ -16,7 +21,8 @@ const getCollection = (collection) => {
         })
         docs.value = docBucket
         error.value = null
-    }, () => {
+    }, (err) => {
+        console.log(err.message);
         error.value = 'could not get messages'
         docs.value = null
     })
